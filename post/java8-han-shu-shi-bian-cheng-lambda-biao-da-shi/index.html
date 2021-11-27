@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>Hello Gridea | JAVA研发架构技术站</title>
+<title>Java8函数式编程-lambda表达式 | JAVA研发架构技术站</title>
 <meta name="description" content="专注Java领域研发；分布式、微服务、云原生&lt;br/&gt;
 进击Go、rust、k8s、docker、istio">
 
@@ -87,41 +87,161 @@
       <div class="sm-12 md-8 col">
         <div class="paper">
           <article class="article">
-            <h1>Hello Gridea</h1>
+            <h1>Java8函数式编程-lambda表达式</h1>
             <p class="article-meta">
-              2018-12-12
+              2021-11-27
+              
+                <a href="https://Byron4j.github.io/tag/W8YQ2nRba" class="badge ">
+                  Java8
+                </a>
+              
+                <a href="https://Byron4j.github.io/tag/qvNjFtUjG" class="badge success">
+                  Java
+                </a>
               
             </p>
             
-              <img src="https://Byron4j.github.io/post-images/hello-gridea.png" alt="Hello Gridea">
-            
             <div class="post-content">
-              <p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-<!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="http://hvenotes.fehey.com/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>𝖶𝗂𝗇𝖽𝗈𝗐𝗌</strong> 或 <strong>𝖬𝖺𝖼𝖮𝖲</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
+              <h2 id="lambda-初体验">lambda 初体验</h2>
+<p>匿名内部类到lambda表达式</p>
+<pre><code class="language-java">package org.byron4j.action.chapter01;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class _01_Button {
+    public static void main(String[] args) {
+        JButton jButton = new JButton();
+        //noinspection Convert2Lambda
+        jButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(&quot;button clicked&quot;);
+            }
+        });
+
+        // lambda 表达式简化书写方式
+        jButton.addActionListener(event -&gt; {
+            System.out.println(&quot;button clicked&quot;);
+        });
+
+    }
+}
+
+</code></pre>
+<h2 id="lambda表达式的常见书写形式">lambda表达式的常见书写形式</h2>
+<pre><code class="language-java">package org.byron4j.action.chapter01;
+
+import java.awt.event.ActionListener;
+import java.util.function.BinaryOperator;
+
+public class _02_LambdaForm {
+    public static void main(String[] args) {
+        // 1. 没有参数使用 () 表示
+        Runnable runnable = () -&gt; System.out.println(&quot;Hello World!&quot;);
+
+        // 2. 一个参数可以省略 ()
+        ActionListener actionListener = event -&gt; {
+            System.out.println(&quot;button clicked&quot;);
+        };
+
+        // 3. lambda 表达式的主体可以使一个表达式，一条语句、多条语句； 一行代码则可以省略 {}
+        Runnable multiStatement = () -&gt; {
+            System.out.println(&quot;Hello&quot;);
+            System.out.println(&quot; World!&quot;);
+        };
+
+        //4. 多个参数，() 不能省略
+        BinaryOperator&lt;Long&gt; binaryOperator = (x, y) -&gt; x + y;
+
+        //5. 显示指定参数类型
+        BinaryOperator&lt;Long&gt; longBinaryOperator = (Long x, Long y) -&gt; x + y;
+
+
+        // 传递变量的值： final 修饰
+        String name = getUsername();  // 其实是 final 修饰
+        Runnable r = () -&gt; System.out.println(&quot;Hello &quot; + name);
+        // name = &quot;ls&quot;;  // 没有这行代码事，上一行代码编译OK， 但是二次给name赋值，则上一行代码编译报错，提示需要final修饰才行
+    }
+
+    private static String getUsername() {
+        return &quot;zs&quot;;
+    }
+}
+
+</code></pre>
+<h2 id="函数式接口">函数式接口</h2>
+<pre><code class="language-java">package org.byron4j.action.chapter01;
+
+import java.awt.event.ActionListener;
+import java.util.function.BinaryOperator;
+import java.util.function.Predicate;
+
+/**
+ * 函数式接口： 只含有一个抽象方法的接口
+ */
+public class _03_FunctionalInterface {
+    public static void main(String[] args) {
+        /**
+         *  函数是接口
+         *  public interface ActionListener extends EventListener {
+         *
+         *      public void actionPerformed (ActionEvent e);
+         *
+         *  }
+         */
+        ActionListener actionListener = event -&gt; {};
+
+        PredicateDemo&lt;Object&gt; objectPredicateDemo = new PredicateDemo&lt;&gt;();
+        System.out.println(objectPredicateDemo.test(&quot;S&quot;));
+
+
+        // 一个行为
+        Predicate&lt;Integer&gt; predicate = x -&gt; x &gt; 5;
+        System.out.println(predicate.test(1));  // false , 1 &gt; 5 is false
+
+        BinaryOperator&lt;Long&gt; add = (x, y) -&gt; x + y;
+        System.out.println(add.apply(1L, 2L));
+    }
+
+    /** 内置常见函数接口
+     * Predicate
+     * Consumer
+     * Function
+     * Supplier
+     * UnaryOperator
+     * BinaryOperator
+     */
+
+
+    static class PredicateDemo&lt;T&gt; implements Predicate&lt;T&gt; {
+
+        @Override
+        public boolean test(T t) {
+            return true;
+        }
+    }
+
+}
+
+</code></pre>
 
             </div>
           </article>
         </div>
         <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://Byron4j.github.io/post/lesslesseffective-java-zhong-wen-ban-greatergreater-yuan-shu-di-3-ban">
+                <h3 class="post-title">
+                  《Effective Java 中文版》原书第3版
+                </h3>
+              </a>
+            </div>
           
         </div>
         
@@ -218,19 +338,19 @@
     </div>
     <div class="row">
       
-        <a href="https://Byron4j.github.io/tag/W8YQ2nRba" class="badge warning">
+        <a href="https://Byron4j.github.io/tag/W8YQ2nRba" class="badge secondary">
           Java8
         </a>
       
-        <a href="https://Byron4j.github.io/tag/qvNjFtUjG" class="badge success">
+        <a href="https://Byron4j.github.io/tag/qvNjFtUjG" class="badge secondary">
           Java
         </a>
       
-        <a href="https://Byron4j.github.io/tag/daOMEXKog" class="badge warning">
+        <a href="https://Byron4j.github.io/tag/daOMEXKog" class="badge secondary">
           Spring Webflux
         </a>
       
-        <a href="https://Byron4j.github.io/tag/GGN4YAnik" class="badge warning">
+        <a href="https://Byron4j.github.io/tag/GGN4YAnik" class="badge ">
           Kafka
         </a>
       
@@ -238,7 +358,7 @@
           Elasticsearch
         </a>
       
-        <a href="https://Byron4j.github.io/tag/Z8EupXM78" class="badge success">
+        <a href="https://Byron4j.github.io/tag/Z8EupXM78" class="badge ">
           SpringCloud Alibaba
         </a>
       
@@ -250,7 +370,7 @@
           Leetcode
         </a>
       
-        <a href="https://Byron4j.github.io/tag/fz4A_YObF" class="badge warning">
+        <a href="https://Byron4j.github.io/tag/fz4A_YObF" class="badge success">
           Docker
         </a>
       
@@ -262,23 +382,23 @@
           RocketMQ
         </a>
       
-        <a href="https://Byron4j.github.io/tag/gR7Reto1d" class="badge warning">
+        <a href="https://Byron4j.github.io/tag/gR7Reto1d" class="badge secondary">
           k8s
         </a>
       
-        <a href="https://Byron4j.github.io/tag/goICLXcvK" class="badge warning">
+        <a href="https://Byron4j.github.io/tag/goICLXcvK" class="badge secondary">
           SpringBoot
         </a>
       
-        <a href="https://Byron4j.github.io/tag/slPalZxWb" class="badge secondary">
+        <a href="https://Byron4j.github.io/tag/slPalZxWb" class="badge ">
           Spring
         </a>
       
-        <a href="https://Byron4j.github.io/tag/ez5l2jWb4" class="badge ">
+        <a href="https://Byron4j.github.io/tag/ez5l2jWb4" class="badge secondary">
           SpringMVC
         </a>
       
-        <a href="https://Byron4j.github.io/tag/dIItCCBz8" class="badge secondary">
+        <a href="https://Byron4j.github.io/tag/dIItCCBz8" class="badge ">
           MyBatis
         </a>
       
@@ -286,31 +406,31 @@
           MySQL
         </a>
       
-        <a href="https://Byron4j.github.io/tag/xc-nhjcI8" class="badge success">
+        <a href="https://Byron4j.github.io/tag/xc-nhjcI8" class="badge warning">
           Redis
         </a>
       
-        <a href="https://Byron4j.github.io/tag/x0aUVQy8R" class="badge ">
+        <a href="https://Byron4j.github.io/tag/x0aUVQy8R" class="badge secondary">
           RabbitMQ
         </a>
       
-        <a href="https://Byron4j.github.io/tag/WuVJbjCiK" class="badge secondary">
+        <a href="https://Byron4j.github.io/tag/WuVJbjCiK" class="badge ">
           Dubbo
         </a>
       
-        <a href="https://Byron4j.github.io/tag/TuVv9Ae3B" class="badge warning">
+        <a href="https://Byron4j.github.io/tag/TuVv9Ae3B" class="badge success">
           JVM
         </a>
       
-        <a href="https://Byron4j.github.io/tag/t1LgZx0Ry" class="badge secondary">
+        <a href="https://Byron4j.github.io/tag/t1LgZx0Ry" class="badge success">
           分布式
         </a>
       
-        <a href="https://Byron4j.github.io/tag/LLHGD9L_o" class="badge secondary">
+        <a href="https://Byron4j.github.io/tag/LLHGD9L_o" class="badge success">
           微服务
         </a>
       
-        <a href="https://Byron4j.github.io/tag/yEsxkgOG5" class="badge warning">
+        <a href="https://Byron4j.github.io/tag/yEsxkgOG5" class="badge secondary">
           SpringCloud
         </a>
       
